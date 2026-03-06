@@ -15,7 +15,11 @@ const { title, description } = Astro.props;
 <BaseLayout title={title} description={description}>
   <Nav />
   <MobileMenu />
-  <main id="main-content" transition:animate="fade" style={`padding-top: var(--nav-height);`}>
+  <main
+    id="main-content"
+    transition:animate="fade"
+    style="padding-top: var(--nav-height); position: relative; z-index: 1;"
+  >
     <slot />
   </main>
   <Footer />

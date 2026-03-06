@@ -1,12 +1,13 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import "@fontsource/instrument-serif/400.css";
-import "@fontsource/outfit/300.css";
-import "@fontsource/outfit/400.css";
-import "@fontsource/outfit/500.css";
-import "@fontsource/outfit/600.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
 import "../styles/global.css";
 import CustomCursor from "../components/ui/CustomCursor.astro";
+import WebGLCanvas from "../components/ui/WebGLCanvas.astro";
 
 interface Props {
   title?: string;
@@ -52,6 +53,11 @@ const ogImage = new URL("/images/og-card.png", Astro.site);
   <body>
     <a href="#main-content" class="skip-link">Skip to content</a>
     <CustomCursor />
+
+    <!-- WebGL Canvas (behind content) -->
+    <canvas id="webgl-canvas" aria-hidden="true"></canvas>
+    <WebGLCanvas />
+
     <slot />
 
     <script>
@@ -74,12 +80,23 @@ const ogImage = new URL("/images/og-card.png", Astro.site);
 
         gsap.ticker.lagSmoothing(0);
 
-        // Store on window for potential external access
         (window as any).__lenis = lenis;
       }
 
       initSmoothScroll();
       document.addEventListener("astro:after-swap", initSmoothScroll);
     </script>
+
+    <style>
+      #webgl-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+    </style>
   </body>
 </html>

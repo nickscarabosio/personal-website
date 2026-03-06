@@ -1,44 +1,40 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Nav from "../../components/layout/Nav.astro";
+import MobileMenu from "../../components/layout/MobileMenu.astro";
 ---
 
 <BaseLayout
   title="Cosmic Ghost Labs — Experimental Products from the Void"
   description="Cosmic Ghost Labs — experimental products built at the edge of culture and technology."
 >
+  <Nav />
+  <MobileMenu />
   <main
     id="main-content"
     class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
+    style="z-index: 1;"
   >
-    <!-- Noise / particle background -->
-    <div id="cgl-bg" class="pointer-events-none absolute inset-0 opacity-20">
-      <canvas id="cgl-canvas" class="h-full w-full"></canvas>
-    </div>
-
-    <!-- Pulsing accent orb -->
-    <div
-      class="animate-glow-pulse pointer-events-none absolute top-1/4 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-10"
-      style="background: radial-gradient(circle, var(--color-accent), transparent 70%);"
-    >
-    </div>
-
     <div class="relative z-10 mx-auto max-w-2xl">
       <p
-        class="mb-6 text-[length:var(--text-xs)] font-medium uppercase tracking-[0.3em] text-[var(--color-accent)]"
+        class="mb-6 font-semibold uppercase tracking-[0.3em] text-[var(--color-text-muted)]"
+        style="font-size: var(--text-label);"
       >
         Coming Soon
       </p>
 
       <h1
         id="cgl-title"
-        class="font-heading text-[length:var(--text-4xl)] leading-tight text-[var(--color-text-primary)]"
+        class="text-reveal font-heading text-[var(--color-text-primary)]"
+        style="font-size: var(--text-h2); line-height: var(--text-h2-lh); letter-spacing: -.02em; font-weight: 400;"
       >
-        Cosmic Ghost Labs
+        <span class="text-reveal-line">Cosmic Ghost Labs</span>
       </h1>
 
       <p
         id="cgl-sub"
-        class="mx-auto mt-6 max-w-md text-[length:var(--text-lg)] font-light leading-relaxed text-[var(--color-text-secondary)]"
+        class="mx-auto mt-6 max-w-md font-medium text-[var(--color-text-secondary)]"
+        style="font-size: var(--text-body); line-height: var(--text-body-lh);"
       >
         Experimental products from the void. We build at the edge of culture and
         technology — shipping things that shouldn't exist yet.
@@ -55,18 +51,21 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             name="email"
             required
             placeholder="your@email.com"
-            class="flex-1 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-5 py-3 text-[length:var(--text-sm)] text-[var(--color-text-primary)] outline-none transition-colors duration-300 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-accent)]"
+            class="flex-1 border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-5 py-3 text-[var(--color-text-primary)] outline-none transition-colors duration-300 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-text-primary)]"
+            style="font-size: var(--text-sm);"
           />
           <button
             type="submit"
-            class="rounded-full bg-[var(--color-accent)] px-6 py-3 text-[length:var(--text-sm)] font-medium uppercase tracking-wider text-[var(--color-bg-primary)] transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_20px_var(--color-accent-dim)]"
+            class="bg-[var(--color-text-primary)] px-6 py-3 font-semibold uppercase tracking-wider text-[var(--color-bg-primary)] transition-all duration-300 hover:opacity-80"
+            style="font-size: var(--text-label);"
           >
             Notify Me
           </button>
         </form>
         <p
           id="cgl-notify-success"
-          class="hidden text-[length:var(--text-sm)] text-[var(--color-accent)]"
+          class="hidden text-[var(--color-text-primary)]"
+          style="font-size: var(--text-sm);"
         >
           You're on the list. We'll be in touch.
         </p>
@@ -75,14 +74,15 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <!-- Back link -->
       <a
         href="/"
-        class="mt-12 inline-flex items-center gap-2 text-[length:var(--text-xs)] uppercase tracking-wider text-[var(--color-text-muted)] transition-colors duration-300 hover:text-[var(--color-text-primary)]"
+        class="mt-12 inline-flex items-center gap-2 uppercase tracking-wider text-[var(--color-text-muted)] transition-colors duration-300 hover:text-[var(--color-text-primary)]"
+        style="font-size: var(--text-label);"
       >
         <svg
           width="14"
           height="14"
           viewBox="0 0 14 14"
           fill="none"
-          class="transition-transform duration-300 group-hover:-translate-x-0.5"
+          class="transition-transform duration-300 hover:-translate-x-0.5"
         >
           <path
             d="M13 7H1M6 2L1 7l5 5"
@@ -101,91 +101,26 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   import gsap from "gsap";
 
   function initCGL() {
-    // Glitch entrance on title
-    const title = document.getElementById("cgl-title");
-    if (!title) return;
+    // Text reveal entrance
+    gsap.fromTo(
+      ".text-reveal-line",
+      { y: "110%", rotateX: -10, opacity: 0 },
+      { y: "0%", rotateX: 0, opacity: 1, duration: 0.8, ease: "expo.out", delay: 0.2 }
+    );
 
-    const tl = gsap.timeline();
+    gsap.fromTo(
+      "#cgl-sub",
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, ease: "expo.out", delay: 0.4 }
+    );
 
-    tl.fromTo(
-      title,
-      { opacity: 0, scale: 1.02 },
-      { opacity: 1, scale: 1, duration: 0.1 }
-    )
-      .to(title, {
-        x: -3,
-        skewX: -2,
-        duration: 0.05,
-        repeat: 3,
-        yoyo: true,
-      })
-      .to(title, { x: 0, skewX: 0, duration: 0.1 })
-      .fromTo(
-        "#cgl-sub",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-        "-=0.1"
-      )
-      .fromTo(
-        "#cgl-cta",
-        { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-        "-=0.3"
-      );
+    gsap.fromTo(
+      "#cgl-cta",
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "expo.out", delay: 0.55 }
+    );
 
-    // Slow particle canvas
-    const canvas = document.getElementById("cgl-canvas") as HTMLCanvasElement | null;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    function resize() {
-      canvas!.width = window.innerWidth;
-      canvas!.height = window.innerHeight;
-    }
-    resize();
-    window.addEventListener("resize", resize);
-
-    const particles: { x: number; y: number; vx: number; vy: number; r: number; a: number }[] = [];
-    const count = 60;
-
-    for (let i = 0; i < count; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 1.5 + 0.5,
-        a: Math.random() * 0.5 + 0.2,
-      });
-    }
-
-    function draw() {
-      if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(200, 255, 0, ${p.a})`;
-        ctx.fill();
-      }
-
-      requestAnimationFrame(draw);
-    }
-
-    draw();
-
-    // Notify form — placeholder behavior
+    // Notify form
     const form = document.getElementById("cgl-notify-form") as HTMLFormElement | null;
     const successMsg = document.getElementById("cgl-notify-success");
     if (form && successMsg) {
@@ -201,7 +136,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             gsap.fromTo(
               successMsg,
               { opacity: 0, y: 10 },
-              { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+              { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }
             );
           },
         });

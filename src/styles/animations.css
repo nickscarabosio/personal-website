@@ -1,111 +1,173 @@
-/* ─── Keyframe Animations ─── */
+/* ─── AROCK-Style Text Reveal System ─── */
 
-/* Border pulse for Cosmic Ghost Labs card */
-@keyframes border-pulse {
-  0%,
-  100% {
-    border-color: var(--color-border);
-  }
-  50% {
-    border-color: var(--color-accent-dim);
-  }
+/* Container with perspective for 3D text reveals */
+.text-reveal {
+  perspective: 12.5vw;
+  overflow: hidden;
 }
 
-/* Glitch effect for CGL page */
-@keyframes glitch {
-  0% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    transform: translate(-2px, -2px);
-  }
-  60% {
-    transform: translate(2px, 2px);
-  }
-  80% {
-    transform: translate(2px, -2px);
-  }
-  100% {
-    transform: translate(0);
-  }
+/* Individual line — hidden state */
+.text-reveal-line {
+  display: block;
+  transform: translate3d(0, 110%, 0) rotateX(-10deg);
+  transform-origin: bottom center;
+  will-change: transform;
 }
 
-@keyframes glitch-skew {
-  0% {
-    transform: skew(0deg);
-  }
-  20% {
-    transform: skew(-1deg);
-  }
-  40% {
-    transform: skew(1deg);
-  }
-  60% {
-    transform: skew(-0.5deg);
-  }
-  80% {
-    transform: skew(0.5deg);
-  }
-  100% {
-    transform: skew(0deg);
-  }
+/* Visible state — triggered by GSAP or class toggle */
+.text-reveal-line.is-visible {
+  transform: translate3d(0, 0, 0) rotateX(0deg);
+  transition: transform var(--duration-reveal) var(--ease-out);
 }
 
-/* Scroll indicator pulse */
+/* Staggered delays via CSS custom property */
+.text-reveal-line:nth-child(1) { transition-delay: 0ms; }
+.text-reveal-line:nth-child(2) { transition-delay: 150ms; }
+.text-reveal-line:nth-child(3) { transition-delay: 300ms; }
+.text-reveal-line:nth-child(4) { transition-delay: 450ms; }
+.text-reveal-line:nth-child(5) { transition-delay: 600ms; }
+
+/* ─── Media/Image Clip-Path Reveal ─── */
+
+.media-reveal {
+  clip-path: inset(0 100% 0 0);
+  will-change: clip-path;
+}
+
+.media-reveal.is-visible {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path var(--duration-slow) var(--ease-out);
+}
+
+/* ─── Y-Axis Translate Reveal (AROCK .y_ / .y pattern) ─── */
+
+.y-reveal {
+  overflow: hidden;
+}
+
+.y-reveal-content {
+  transform: translate3d(0, 110%, 0);
+  will-change: transform;
+}
+
+.y-reveal-content.is-visible {
+  transform: translate3d(0, 0, 0);
+  transition: transform var(--duration-reveal) var(--ease-out) var(--reveal-delay);
+}
+
+/* ─── Fade Reveal ─── */
+
+.fade-reveal {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  will-change: opacity, transform;
+}
+
+.fade-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity var(--duration-reveal) var(--ease-out),
+    transform var(--duration-reveal) var(--ease-out);
+}
+
+/* ─── Scroll Indicator ─── */
+
 @keyframes scroll-pulse {
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
     transform: translateY(0);
   }
   50% {
-    opacity: 0.4;
+    opacity: 0.3;
     transform: translateY(6px);
   }
 }
 
-/* Subtle float */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
-
-/* Accent glow pulse */
-@keyframes glow-pulse {
-  0%,
-  100% {
-    box-shadow: 0 0 8px var(--color-accent-dim);
-  }
-  50% {
-    box-shadow: 0 0 20px var(--color-accent);
-  }
-}
-
-/* Utility classes */
-.animate-border-pulse {
-  animation: border-pulse 3s var(--ease-smooth) infinite;
-}
-
-.animate-glitch {
-  animation: glitch 0.3s linear;
-}
-
 .animate-scroll-pulse {
-  animation: scroll-pulse 2s var(--ease-smooth) infinite;
+  animation: scroll-pulse 2s var(--ease-out) infinite;
 }
 
-.animate-float {
-  animation: float 4s var(--ease-smooth) infinite;
+/* ─── Menu Link Stagger ─── */
+
+.menu-link-reveal {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0);
+  will-change: opacity, transform;
 }
 
-.animate-glow-pulse {
-  animation: glow-pulse 3s var(--ease-smooth) infinite;
+.menu-link-reveal.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity var(--duration-reveal) var(--ease-out),
+    transform var(--duration-reveal) var(--ease-out);
+}
+
+/* Stagger: 60ms per child (AROCK menu pattern) */
+.menu-link-reveal:nth-child(1) { transition-delay: 0ms; }
+.menu-link-reveal:nth-child(2) { transition-delay: 60ms; }
+.menu-link-reveal:nth-child(3) { transition-delay: 120ms; }
+.menu-link-reveal:nth-child(4) { transition-delay: 180ms; }
+.menu-link-reveal:nth-child(5) { transition-delay: 240ms; }
+
+/* ─── Icon Hover Swap (AROCK pattern) ─── */
+
+.icon-swap {
+  position: relative;
+  overflow: hidden;
+}
+
+.icon-swap-default,
+.icon-swap-hover {
+  transition: all var(--duration-reveal) var(--ease-out);
+}
+
+.icon-swap-default {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.icon-swap-hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translate3d(-4px, 0, 0);
+}
+
+.icon-swap:hover .icon-swap-default {
+  opacity: 0;
+  transform: translate3d(4px, 0, 0);
+}
+
+.icon-swap:hover .icon-swap-hover {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* ─── Page Transition ─── */
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes page-exit {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
 }

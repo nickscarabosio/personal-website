@@ -5,16 +5,18 @@ import Button from "../ui/Button.astro";
 <section
   id="cta"
   class="mx-auto max-w-[var(--max-width)] px-6 text-center md:px-10"
-  style={`padding-top: var(--space-section); padding-bottom: var(--space-section);`}
+  style="padding-top: var(--space-section); padding-bottom: var(--space-section); z-index: 1; position: relative;"
 >
   <div class="cta-content mx-auto max-w-xl">
     <h2
-      class="font-heading text-[length:var(--text-3xl)] leading-tight text-[var(--color-text-primary)]"
+      class="text-reveal font-heading text-[var(--color-text-primary)]"
+      style="font-size: var(--text-h2); line-height: var(--text-h2-lh); letter-spacing: -.02em; font-weight: 400;"
     >
-      Ready to talk?
+      <span class="text-reveal-line">Ready to talk?</span>
     </h2>
     <p
-      class="mt-4 text-[length:var(--text-base)] font-light text-[var(--color-text-secondary)]"
+      class="mt-4 font-medium text-[var(--color-text-secondary)]"
+      style="font-size: var(--text-body); line-height: var(--text-body-lh);"
     >
       Whether you have a project in mind, need a fractional operator, or just
       want to connect — let's make it happen.
@@ -33,16 +35,34 @@ import Button from "../ui/Button.astro";
 
   function initCTA() {
     gsap.fromTo(
-      ".cta-content",
-      { opacity: 0, y: 30 },
+      "#cta .text-reveal-line",
+      { y: "110%", rotateX: -10, opacity: 0 },
       {
+        y: "0%",
+        rotateX: 0,
         opacity: 1,
-        y: 0,
         duration: 0.8,
-        ease: "power2.out",
+        ease: "expo.out",
         scrollTrigger: {
           trigger: "#cta",
           start: "top 80%",
+          once: true,
+        },
+      }
+    );
+
+    gsap.fromTo(
+      ".cta-content p, .cta-content .mt-8",
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.12,
+        ease: "expo.out",
+        scrollTrigger: {
+          trigger: "#cta",
+          start: "top 75%",
           once: true,
         },
       }
