@@ -9,14 +9,15 @@ const ventures = await getCollection("ventures");
 <section
   id="ventures"
   class="mx-auto max-w-[var(--max-width)] px-6 md:px-10"
-  style={`padding-top: var(--space-section); padding-bottom: var(--space-section);`}
+  style="padding-top: var(--space-section); padding-bottom: var(--space-section); z-index: 1; position: relative;"
 >
   <div class="mb-12 text-center">
     <SectionLabel class="mb-4">Ventures</SectionLabel>
     <h2
-      class="font-heading text-[length:var(--text-3xl)] text-[var(--color-text-primary)]"
+      class="text-reveal font-heading text-[var(--color-text-primary)]"
+      style="font-size: var(--text-h2); line-height: var(--text-h2-lh); letter-spacing: -.02em; font-weight: 400;"
     >
-      What I'm Building
+      <span class="text-reveal-line">What I'm Building</span>
     </h2>
   </div>
 
@@ -43,19 +44,37 @@ const ventures = await getCollection("ventures");
   gsap.registerPlugin(ScrollTrigger);
 
   function initVentures() {
+    // Heading reveal
     gsap.fromTo(
-      ".venture-card",
-      { opacity: 0, scale: 0.95, y: 20 },
+      "#ventures .text-reveal-line",
+      { y: "110%", rotateX: -10, opacity: 0 },
       {
+        y: "0%",
+        rotateX: 0,
         opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.6,
-        stagger: 0.1,
-        ease: "power2.out",
+        duration: 0.8,
+        ease: "expo.out",
         scrollTrigger: {
           trigger: "#ventures",
           start: "top 80%",
+          once: true,
+        },
+      }
+    );
+
+    // Card stagger
+    gsap.fromTo(
+      ".venture-card",
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.12,
+        ease: "expo.out",
+        scrollTrigger: {
+          trigger: "#ventures .grid",
+          start: "top 85%",
           once: true,
         },
       }

@@ -18,7 +18,8 @@ const links = [
         <li>
           <a
             href={link.href}
-            class="mobile-menu-link block font-heading text-[length:var(--text-3xl)] text-[var(--color-text-primary)] opacity-0 transition-colors duration-300 hover:text-[var(--color-accent)]"
+            class="mobile-menu-link block font-heading opacity-0 transition-opacity duration-300 hover:opacity-70"
+            style="font-size: var(--text-h3); line-height: var(--text-h3-lh); color: var(--color-text-primary);"
           >
             {link.label}
           </a>
@@ -44,11 +45,11 @@ const links = [
       opacity: 1,
       pointerEvents: "auto",
       duration: 0.4,
-      ease: "power2.out",
+      ease: "expo.out",
     }).fromTo(
       menuLinks,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, stagger: 0.08, duration: 0.5, ease: "power2.out" },
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, stagger: 0.06, duration: 0.6, ease: "expo.out" },
       "-=0.2"
     );
 
@@ -74,14 +75,10 @@ const links = [
       isOpen ? closeMenu() : openMenu();
     });
 
-    // Close on link click
     menuLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        closeMenu();
-      });
+      link.addEventListener("click", () => closeMenu());
     });
 
-    // Close on Escape
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && isOpen) closeMenu();
     });

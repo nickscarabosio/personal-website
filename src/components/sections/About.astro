@@ -5,37 +5,41 @@ import SectionLabel from "../ui/SectionLabel.astro";
 <section
   id="about"
   class="relative mx-auto max-w-[var(--max-width)] px-6 md:px-10"
-  style={`padding-top: var(--space-section); padding-bottom: var(--space-section);`}
+  style="padding-top: var(--space-section); padding-bottom: var(--space-section); z-index: 1; position: relative;"
 >
   <div class="grid gap-12 md:grid-cols-2 md:gap-16">
     <!-- Left column -->
     <div class="about-left">
       <SectionLabel class="mb-4">About</SectionLabel>
       <h2
-        class="font-heading text-[length:var(--text-3xl)] leading-tight text-[var(--color-text-primary)]"
+        class="text-reveal font-heading text-[var(--color-text-primary)]"
+        style="font-size: var(--text-h2); line-height: var(--text-h2-lh); letter-spacing: -.02em; font-weight: 400;"
       >
-        I build things that<br />
-        <span class="text-[var(--color-accent)]">move culture forward.</span>
+        <span class="text-reveal-line">I build things that</span>
+        <span class="text-reveal-line">move culture forward.</span>
       </h2>
     </div>
 
     <!-- Right column -->
     <div class="about-right flex flex-col justify-center gap-6">
       <p
-        class="about-line text-[length:var(--text-base)] font-light leading-relaxed text-[var(--color-text-secondary)]"
+        class="about-line font-medium text-[var(--color-text-secondary)]"
+        style="font-size: var(--text-body); line-height: var(--text-body-lh);"
       >
         I'm an operator, coach, and builder working at the intersection of
         culture, technology, and business. I help creators monetize their
         influence and build brands that last.
       </p>
       <p
-        class="about-line text-[length:var(--text-base)] font-light leading-relaxed text-[var(--color-text-secondary)]"
+        class="about-line font-medium text-[var(--color-text-secondary)]"
+        style="font-size: var(--text-body); line-height: var(--text-body-lh);"
       >
         Whether it's launching new ventures, advising startups as a fractional
         leader, or experimenting with new products — I'm always building.
       </p>
       <p
-        class="about-line text-[length:var(--text-base)] font-light leading-relaxed text-[var(--color-text-secondary)]"
+        class="about-line font-medium text-[var(--color-text-secondary)]"
+        style="font-size: var(--text-body); line-height: var(--text-body-lh);"
       >
         Based in the real world, shipping from everywhere.
       </p>
@@ -50,14 +54,21 @@ import SectionLabel from "../ui/SectionLabel.astro";
   gsap.registerPlugin(ScrollTrigger);
 
   function initAbout() {
+    // Text reveal with perspective rotateX
     gsap.fromTo(
-      ".about-left",
-      { opacity: 0, x: -30 },
+      "#about .text-reveal-line",
       {
+        y: "110%",
+        rotateX: -10,
+        opacity: 0,
+      },
+      {
+        y: "0%",
+        rotateX: 0,
         opacity: 1,
-        x: 0,
         duration: 0.8,
-        ease: "power2.out",
+        stagger: 0.15,
+        ease: "expo.out",
         scrollTrigger: {
           trigger: "#about",
           start: "top 80%",
@@ -66,15 +77,16 @@ import SectionLabel from "../ui/SectionLabel.astro";
       }
     );
 
+    // Paragraph fade reveals with stagger
     gsap.fromTo(
       ".about-line",
-      { opacity: 0, y: 25 },
+      { opacity: 0, y: 30 },
       {
         opacity: 1,
         y: 0,
         duration: 0.6,
-        stagger: 0.12,
-        ease: "power2.out",
+        stagger: 0.15,
+        ease: "expo.out",
         scrollTrigger: {
           trigger: ".about-right",
           start: "top 80%",

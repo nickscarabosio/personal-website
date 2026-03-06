@@ -1,50 +1,43 @@
 ---
 import Button from "../ui/Button.astro";
-import SocialLinks from "../ui/SocialLinks.astro";
 ---
 
 <section
   id="hero"
   class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
+  style="z-index: 1;"
 >
-  <!-- Subtle gradient bg -->
-  <div
-    id="hero-bg"
-    class="pointer-events-none absolute inset-0 opacity-40"
-    style="background: radial-gradient(ellipse at 50% 50%, var(--color-accent-dim), transparent 70%);"
-  >
-  </div>
-
-  <div class="relative z-10 flex max-w-4xl flex-col items-center gap-6">
+  <div class="relative z-10 flex flex-col items-center gap-6" style="max-width: 90vw;">
     <p
       id="hero-meta"
-      class="text-[length:var(--text-xs)] font-medium uppercase tracking-[0.25em] text-[var(--color-text-muted)] opacity-0"
+      class="text-[length:var(--text-label)] font-semibold uppercase tracking-[0.25em] text-[var(--color-text-muted)] opacity-0"
+      style="line-height: var(--text-label-lh);"
     >
       Operator &middot; Coach &middot; Builder
     </p>
 
     <h1
       id="hero-name"
-      class="font-heading text-[length:var(--text-5xl)] leading-[1.05] text-[var(--color-text-primary)]"
+      class="text-reveal font-heading"
+      style="font-size: var(--text-h1); line-height: var(--text-h1-lh); letter-spacing: -.02em; font-weight: 400;"
     >
-      <span class="hero-word inline-block opacity-0">Nick</span>{" "}
-      <span class="hero-word inline-block opacity-0">Scarabosio</span>
+      <span class="text-reveal-line">Nick</span>
+      <span class="text-reveal-line">Scarabosio</span>
     </h1>
 
     <p
       id="hero-sub"
-      class="max-w-lg text-[length:var(--text-lg)] font-light leading-relaxed text-[var(--color-text-secondary)] opacity-0"
+      class="max-w-lg font-medium text-[var(--color-text-secondary)] opacity-0"
+      style="font-size: var(--text-body); line-height: var(--text-body-lh);"
     >
       Building ventures, coaching creators, and shipping products that move
       culture forward.
     </p>
 
-    <div id="hero-cta" class="mt-4 flex items-center gap-4 opacity-0">
+    <div id="hero-cta" class="mt-6 flex items-center gap-4 opacity-0">
       <Button href="/contact">Book a Call</Button>
       <Button href="/#ventures" variant="ghost">See Ventures</Button>
     </div>
-
-    <SocialLinks class="mt-2 opacity-0" id="hero-socials" />
   </div>
 
   <!-- Scroll indicator -->
@@ -79,53 +72,54 @@ import SocialLinks from "../ui/SocialLinks.astro";
   import gsap from "gsap";
 
   function initHero() {
-    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+    const ease = "expo.out";
 
-    tl.fromTo(
-      ".hero-word",
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 0.9, stagger: 0.15 }
-    )
-      .fromTo(
-        "#hero-meta",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        "-=0.4"
-      )
-      .fromTo(
-        "#hero-sub",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.6 },
-        "-=0.3"
-      )
-      .fromTo(
-        "#hero-cta",
-        { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.6 },
-        "-=0.2"
-      )
-      .fromTo(
-        "#hero-socials",
-        { opacity: 0, x: -10 },
-        { opacity: 1, x: 0, duration: 0.5 },
-        "-=0.2"
-      )
-      .fromTo(
-        "#hero-scroll-indicator",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.8 },
-        "-=0.1"
-      );
+    // Text reveal — slide up with rotateX
+    gsap.fromTo(
+      ".text-reveal-line",
+      {
+        y: "110%",
+        rotateX: -10,
+        opacity: 0,
+      },
+      {
+        y: "0%",
+        rotateX: 0,
+        opacity: 1,
+        duration: 1,
+        stagger: 0.15,
+        ease,
+        delay: 0.2,
+      }
+    );
 
-    // Cursor-reactive background
-    const bg = document.getElementById("hero-bg");
-    if (bg && matchMedia("(pointer: fine)").matches) {
-      document.addEventListener("mousemove", (e) => {
-        const x = (e.clientX / window.innerWidth) * 100;
-        const y = (e.clientY / window.innerHeight) * 100;
-        bg.style.background = `radial-gradient(ellipse at ${x}% ${y}%, var(--color-accent-dim), transparent 70%)`;
-      });
-    }
+    // Meta line
+    gsap.fromTo(
+      "#hero-meta",
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, ease, delay: 0.1 }
+    );
+
+    // Subtitle
+    gsap.fromTo(
+      "#hero-sub",
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, ease, delay: 0.5 }
+    );
+
+    // CTA buttons
+    gsap.fromTo(
+      "#hero-cta",
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.6, ease, delay: 0.65 }
+    );
+
+    // Scroll indicator
+    gsap.fromTo(
+      "#hero-scroll-indicator",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.8, ease, delay: 1.2 }
+    );
   }
 
   initHero();

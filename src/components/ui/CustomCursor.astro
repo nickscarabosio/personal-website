@@ -17,17 +17,16 @@
   #cursor-dot {
     width: 8px;
     height: 8px;
-    background-color: var(--color-accent);
+    background-color: var(--color-text-primary);
   }
 
   #cursor-ring {
     width: 32px;
     height: 32px;
-    border: 1.5px solid var(--color-accent);
-    opacity: 0.6;
+    border: 1.5px solid var(--color-text-primary);
+    opacity: 0.5;
   }
 
-  /* Hide on touch devices */
   @media (pointer: coarse) {
     #cursor-dot,
     #cursor-ring {
@@ -44,7 +43,6 @@
     const ring = document.getElementById("cursor-ring");
     if (!dot || !ring) return;
 
-    // Skip on touch devices
     if ("ontouchstart" in window || matchMedia("(pointer: coarse)").matches) {
       dot.style.display = "none";
       ring.style.display = "none";
@@ -63,25 +61,22 @@
       setRingY(e.clientY);
     });
 
-    // Hover effect on interactive elements
     const interactiveSelector = "a, button, [data-cursor-hover]";
 
     document.addEventListener("mouseover", (e) => {
       if ((e.target as HTMLElement).closest(interactiveSelector)) {
-        gsap.to(ring, { width: 48, height: 48, borderColor: "var(--color-accent)", opacity: 1, duration: 0.3 });
-        gsap.to(ring, { boxShadow: "0 0 12px var(--color-accent-dim)", duration: 0.3 });
+        gsap.to(ring, { width: 48, height: 48, borderColor: "var(--color-text-primary)", opacity: 0.8, duration: 0.3 });
         gsap.to(dot, { opacity: 0, duration: 0.2 });
       }
     });
 
     document.addEventListener("mouseout", (e) => {
       if ((e.target as HTMLElement).closest(interactiveSelector)) {
-        gsap.to(ring, { width: 32, height: 32, opacity: 0.6, boxShadow: "none", duration: 0.3 });
+        gsap.to(ring, { width: 32, height: 32, opacity: 0.5, duration: 0.3 });
         gsap.to(dot, { opacity: 1, duration: 0.2 });
       }
     });
 
-    // Click effect
     document.addEventListener("mousedown", () => {
       gsap.to(ring, { scale: 0.8, duration: 0.15 });
     });
@@ -91,7 +86,6 @@
     });
   }
 
-  // Run on initial load and on page transitions
   initCursor();
   document.addEventListener("astro:after-swap", initCursor);
 </script>

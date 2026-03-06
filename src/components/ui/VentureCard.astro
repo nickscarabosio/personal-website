@@ -23,29 +23,34 @@ const linkProps = url
 <Tag
   {...linkProps}
   class:list={[
-    "venture-card group relative flex flex-col justify-between gap-6 rounded-2xl border p-6 transition-all duration-300 md:p-8",
+    "venture-card group relative flex flex-col justify-between gap-6 border p-6 transition-all duration-300 md:p-8",
     isActive
-      ? "border-[var(--color-border)] bg-[var(--color-bg-secondary)] hover:-translate-y-1 hover:border-[var(--color-accent-dim)] hover:shadow-[0_0_30px_rgba(200,255,0,0.06)]"
-      : "animate-border-pulse border-[var(--color-border)] bg-[var(--color-bg-secondary)] opacity-60",
+      ? "border-[var(--color-border)] bg-[var(--color-bg-secondary)] hover:-translate-y-1 hover:border-[var(--color-border-hover)]"
+      : "border-[var(--color-border)] bg-[var(--color-bg-secondary)] opacity-50",
   ]}
 >
   <div>
     <div class="mb-2 flex items-center gap-3">
       <h3
-        class="font-heading text-[length:var(--text-xl)] text-[var(--color-text-primary)]"
+        class="font-heading text-[var(--color-text-primary)]"
+        style="font-size: var(--text-h3); line-height: var(--text-h3-lh); letter-spacing: -.02em;"
       >
         {name}
       </h3>
       {
         !isActive && (
-          <span class="rounded-full bg-[var(--color-bg-tertiary)] px-3 py-1 text-[length:var(--text-xs)] text-[var(--color-text-muted)]">
+          <span
+            class="bg-[var(--color-bg-tertiary)] px-3 py-1 font-semibold text-[var(--color-text-muted)]"
+            style="font-size: var(--text-label);"
+          >
             Coming Soon
           </span>
         )
       }
     </div>
     <p
-      class="text-[length:var(--text-sm)] font-light text-[var(--color-text-secondary)]"
+      class="font-medium text-[var(--color-text-secondary)]"
+      style="font-size: var(--text-sm);"
     >
       {descriptor}
     </p>
@@ -55,11 +60,12 @@ const linkProps = url
     urlLabel && (
       <span
         class:list={[
-          "inline-flex items-center gap-1 text-[length:var(--text-xs)] font-medium uppercase tracking-wider transition-colors duration-300",
+          "inline-flex items-center gap-1 font-semibold uppercase tracking-wider transition-opacity duration-300",
           isActive
-            ? "text-[var(--color-accent)] group-hover:brightness-110"
+            ? "text-[var(--color-text-primary)] group-hover:opacity-70"
             : "text-[var(--color-text-muted)]",
         ]}
+        style="font-size: var(--text-label);"
       >
         {urlLabel}
         <svg
