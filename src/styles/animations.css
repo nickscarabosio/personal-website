@@ -1,0 +1,111 @@
+/* ─── Keyframe Animations ─── */
+
+/* Border pulse for Cosmic Ghost Labs card */
+@keyframes border-pulse {
+  0%,
+  100% {
+    border-color: var(--color-border);
+  }
+  50% {
+    border-color: var(--color-accent-dim);
+  }
+}
+
+/* Glitch effect for CGL page */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@keyframes glitch-skew {
+  0% {
+    transform: skew(0deg);
+  }
+  20% {
+    transform: skew(-1deg);
+  }
+  40% {
+    transform: skew(1deg);
+  }
+  60% {
+    transform: skew(-0.5deg);
+  }
+  80% {
+    transform: skew(0.5deg);
+  }
+  100% {
+    transform: skew(0deg);
+  }
+}
+
+/* Scroll indicator pulse */
+@keyframes scroll-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.4;
+    transform: translateY(6px);
+  }
+}
+
+/* Subtle float */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Accent glow pulse */
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 8px var(--color-accent-dim);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--color-accent);
+  }
+}
+
+/* Utility classes */
+.animate-border-pulse {
+  animation: border-pulse 3s var(--ease-smooth) infinite;
+}
+
+.animate-glitch {
+  animation: glitch 0.3s linear;
+}
+
+.animate-scroll-pulse {
+  animation: scroll-pulse 2s var(--ease-smooth) infinite;
+}
+
+.animate-float {
+  animation: float 4s var(--ease-smooth) infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s var(--ease-smooth) infinite;
+}

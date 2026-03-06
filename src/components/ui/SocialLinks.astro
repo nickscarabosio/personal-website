@@ -1,0 +1,28 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const socials = [
+  { label: "Twitter", href: "https://twitter.com", icon: "𝕏" },
+  { label: "LinkedIn", href: "https://linkedin.com", icon: "in" },
+];
+---
+
+<div class:list={["flex items-center gap-4", className]}>
+  {
+    socials.map((s) => (
+      <a
+        href={s.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={s.label}
+        class="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--color-border)] text-[length:var(--text-sm)] text-[var(--color-text-secondary)] transition-all duration-300 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+      >
+        {s.icon}
+      </a>
+    ))
+  }
+</div>

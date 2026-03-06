@@ -1,0 +1,214 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Cosmic Ghost Labs — Experimental Products from the Void"
+  description="Cosmic Ghost Labs — experimental products built at the edge of culture and technology."
+>
+  <main
+    id="main-content"
+    class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
+  >
+    <!-- Noise / particle background -->
+    <div id="cgl-bg" class="pointer-events-none absolute inset-0 opacity-20">
+      <canvas id="cgl-canvas" class="h-full w-full"></canvas>
+    </div>
+
+    <!-- Pulsing accent orb -->
+    <div
+      class="animate-glow-pulse pointer-events-none absolute top-1/4 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full opacity-10"
+      style="background: radial-gradient(circle, var(--color-accent), transparent 70%);"
+    >
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-2xl">
+      <p
+        class="mb-6 text-[length:var(--text-xs)] font-medium uppercase tracking-[0.3em] text-[var(--color-accent)]"
+      >
+        Coming Soon
+      </p>
+
+      <h1
+        id="cgl-title"
+        class="font-heading text-[length:var(--text-4xl)] leading-tight text-[var(--color-text-primary)]"
+      >
+        Cosmic Ghost Labs
+      </h1>
+
+      <p
+        id="cgl-sub"
+        class="mx-auto mt-6 max-w-md text-[length:var(--text-lg)] font-light leading-relaxed text-[var(--color-text-secondary)]"
+      >
+        Experimental products from the void. We build at the edge of culture and
+        technology — shipping things that shouldn't exist yet.
+      </p>
+
+      <!-- Email notify CTA -->
+      <div id="cgl-cta" class="mt-10 flex flex-col items-center gap-4">
+        <form
+          id="cgl-notify-form"
+          class="flex w-full max-w-sm gap-3"
+        >
+          <input
+            type="email"
+            name="email"
+            required
+            placeholder="your@email.com"
+            class="flex-1 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-secondary)] px-5 py-3 text-[length:var(--text-sm)] text-[var(--color-text-primary)] outline-none transition-colors duration-300 placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-accent)]"
+          />
+          <button
+            type="submit"
+            class="rounded-full bg-[var(--color-accent)] px-6 py-3 text-[length:var(--text-sm)] font-medium uppercase tracking-wider text-[var(--color-bg-primary)] transition-all duration-300 hover:brightness-110 hover:shadow-[0_0_20px_var(--color-accent-dim)]"
+          >
+            Notify Me
+          </button>
+        </form>
+        <p
+          id="cgl-notify-success"
+          class="hidden text-[length:var(--text-sm)] text-[var(--color-accent)]"
+        >
+          You're on the list. We'll be in touch.
+        </p>
+      </div>
+
+      <!-- Back link -->
+      <a
+        href="/"
+        class="mt-12 inline-flex items-center gap-2 text-[length:var(--text-xs)] uppercase tracking-wider text-[var(--color-text-muted)] transition-colors duration-300 hover:text-[var(--color-text-primary)]"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          class="transition-transform duration-300 group-hover:-translate-x-0.5"
+        >
+          <path
+            d="M13 7H1M6 2L1 7l5 5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        Back to Home
+      </a>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  import gsap from "gsap";
+
+  function initCGL() {
+    // Glitch entrance on title
+    const title = document.getElementById("cgl-title");
+    if (!title) return;
+
+    const tl = gsap.timeline();
+
+    tl.fromTo(
+      title,
+      { opacity: 0, scale: 1.02 },
+      { opacity: 1, scale: 1, duration: 0.1 }
+    )
+      .to(title, {
+        x: -3,
+        skewX: -2,
+        duration: 0.05,
+        repeat: 3,
+        yoyo: true,
+      })
+      .to(title, { x: 0, skewX: 0, duration: 0.1 })
+      .fromTo(
+        "#cgl-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.1"
+      )
+      .fromTo(
+        "#cgl-cta",
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+        "-=0.3"
+      );
+
+    // Slow particle canvas
+    const canvas = document.getElementById("cgl-canvas") as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    function resize() {
+      canvas!.width = window.innerWidth;
+      canvas!.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const particles: { x: number; y: number; vx: number; vy: number; r: number; a: number }[] = [];
+    const count = 60;
+
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.5 + 0.5,
+        a: Math.random() * 0.5 + 0.2,
+      });
+    }
+
+    function draw() {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200, 255, 0, ${p.a})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    // Notify form — placeholder behavior
+    const form = document.getElementById("cgl-notify-form") as HTMLFormElement | null;
+    const successMsg = document.getElementById("cgl-notify-success");
+    if (form && successMsg) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        gsap.to(form, {
+          opacity: 0,
+          y: -10,
+          duration: 0.3,
+          onComplete: () => {
+            form.classList.add("hidden");
+            successMsg.classList.remove("hidden");
+            gsap.fromTo(
+              successMsg,
+              { opacity: 0, y: 10 },
+              { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }
+            );
+          },
+        });
+      });
+    }
+  }
+
+  initCGL();
+  document.addEventListener("astro:after-swap", initCGL);
+</script>

@@ -1,0 +1,54 @@
+---
+import Button from "../ui/Button.astro";
+---
+
+<section
+  id="cta"
+  class="mx-auto max-w-[var(--max-width)] px-6 text-center md:px-10"
+  style={`padding-top: var(--space-section); padding-bottom: var(--space-section);`}
+>
+  <div class="cta-content mx-auto max-w-xl">
+    <h2
+      class="font-heading text-[length:var(--text-3xl)] leading-tight text-[var(--color-text-primary)]"
+    >
+      Ready to talk?
+    </h2>
+    <p
+      class="mt-4 text-[length:var(--text-base)] font-light text-[var(--color-text-secondary)]"
+    >
+      Whether you have a project in mind, need a fractional operator, or just
+      want to connect — let's make it happen.
+    </p>
+    <div class="mt-8">
+      <Button href="/contact">Book a Call</Button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initCTA() {
+    gsap.fromTo(
+      ".cta-content",
+      { opacity: 0, y: 30 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#cta",
+          start: "top 80%",
+          once: true,
+        },
+      }
+    );
+  }
+
+  initCTA();
+  document.addEventListener("astro:after-swap", initCTA);
+</script>

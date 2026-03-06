@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    { "source": "/rants/:path*", "destination": "/writing/:path*", "permanent": true },
+    { "source": "/bookacall", "destination": "/contact", "permanent": true },
+    { "source": "/bookacall/", "destination": "/contact", "permanent": true },
+    { "source": "/about", "destination": "/#about", "permanent": true },
+    { "source": "/about/", "destination": "/#about", "permanent": true }
+  ]
+}

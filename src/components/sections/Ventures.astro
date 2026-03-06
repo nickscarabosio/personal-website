@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import SectionLabel from "../ui/SectionLabel.astro";
+import VentureCard from "../ui/VentureCard.astro";
+
+const ventures = await getCollection("ventures");
+---
+
+<section
+  id="ventures"
+  class="mx-auto max-w-[var(--max-width)] px-6 md:px-10"
+  style={`padding-top: var(--space-section); padding-bottom: var(--space-section);`}
+>
+  <div class="mb-12 text-center">
+    <SectionLabel class="mb-4">Ventures</SectionLabel>
+    <h2
+      class="font-heading text-[length:var(--text-3xl)] text-[var(--color-text-primary)]"
+    >
+      What I'm Building
+    </h2>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-3">
+    {
+      ventures.map((v) => (
+        <VentureCard
+          name={v.data.name}
+          descriptor={v.data.descriptor}
+          status={v.data.status}
+          url={v.data.url}
+          urlLabel={v.data.urlLabel}
+          internal={v.data.internal}
+        />
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initVentures() {
+    gsap.fromTo(
+      ".venture-card",
+      { opacity: 0, scale: 0.95, y: 20 },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: "#ventures",
+          start: "top 80%",
+          once: true,
+        },
+      }
+    );
+  }
+
+  initVentures();
+  document.addEventListener("astro:after-swap", initVentures);
+</script>

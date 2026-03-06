@@ -1,0 +1,30 @@
+---
+interface Props {
+  href?: string;
+  variant?: "primary" | "ghost";
+  class?: string;
+  [key: string]: any;
+}
+
+const { href, variant = "primary", class: className, ...rest } = Astro.props;
+
+const Tag = href ? "a" : "button";
+
+const baseClasses =
+  "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-[length:var(--text-sm)] font-medium tracking-wider uppercase transition-all duration-300";
+
+const variantClasses = {
+  primary:
+    "bg-[var(--color-accent)] text-[var(--color-bg-primary)] hover:brightness-110 hover:shadow-[0_0_20px_var(--color-accent-dim)]",
+  ghost:
+    "border border-[var(--color-border)] text-[var(--color-text-primary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]",
+};
+---
+
+<Tag
+  href={href}
+  class:list={[baseClasses, variantClasses[variant], className]}
+  {...rest}
+>
+  <slot />
+</Tag>

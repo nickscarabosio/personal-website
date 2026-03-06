@@ -1,0 +1,83 @@
+---
+interface Props {
+  name: string;
+  descriptor: string;
+  status: "active" | "coming-soon";
+  url?: string;
+  urlLabel?: string;
+  internal?: boolean;
+}
+
+const { name, descriptor, status, url, urlLabel, internal } = Astro.props;
+
+const isActive = status === "active";
+const Tag = url ? "a" : "div";
+const linkProps = url
+  ? {
+      href: url,
+      ...(internal ? {} : { target: "_blank", rel: "noopener noreferrer" }),
+    }
+  : {};
+---
+
+<Tag
+  {...linkProps}
+  class:list={[
+    "venture-card group relative flex flex-col justify-between gap-6 rounded-2xl border p-6 transition-all duration-300 md:p-8",
+    isActive
+      ? "border-[var(--color-border)] bg-[var(--color-bg-secondary)] hover:-translate-y-1 hover:border-[var(--color-accent-dim)] hover:shadow-[0_0_30px_rgba(200,255,0,0.06)]"
+      : "animate-border-pulse border-[var(--color-border)] bg-[var(--color-bg-secondary)] opacity-60",
+  ]}
+>
+  <div>
+    <div class="mb-2 flex items-center gap-3">
+      <h3
+        class="font-heading text-[length:var(--text-xl)] text-[var(--color-text-primary)]"
+      >
+        {name}
+      </h3>
+      {
+        !isActive && (
+          <span class="rounded-full bg-[var(--color-bg-tertiary)] px-3 py-1 text-[length:var(--text-xs)] text-[var(--color-text-muted)]">
+            Coming Soon
+          </span>
+        )
+      }
+    </div>
+    <p
+      class="text-[length:var(--text-sm)] font-light text-[var(--color-text-secondary)]"
+    >
+      {descriptor}
+    </p>
+  </div>
+
+  {
+    urlLabel && (
+      <span
+        class:list={[
+          "inline-flex items-center gap-1 text-[length:var(--text-xs)] font-medium uppercase tracking-wider transition-colors duration-300",
+          isActive
+            ? "text-[var(--color-accent)] group-hover:brightness-110"
+            : "text-[var(--color-text-muted)]",
+        ]}
+      >
+        {urlLabel}
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          class="transition-transform duration-300 group-hover:translate-x-0.5"
+        >
+          <path
+            d="M1 7h12M8 2l5 5-5 5"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+    )
+  }
+</Tag>
